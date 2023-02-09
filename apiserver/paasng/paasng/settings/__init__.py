@@ -802,6 +802,8 @@ BK_PLUGIN_CONFIG = settings.get('BK_PLUGIN_CONFIG', {'allow_creation': IS_ALLOW_
 BK_PLUGIN_APIGW_SERVICE_STAGE = settings.get('BK_PLUGIN_APIGW_SERVICE_STAGE', 'prod')  # 环境（stage）
 BK_PLUGIN_APIGW_SERVICE_USER_AUTH_TYPE = settings.get('BK_PLUGIN_APIGW_SERVICE_USER_AUTH_TYPE', 'default')  # 用户类型
 
+# 是否开启插件开发功能
+IS_ALLOW_PLUGIN_CENTER = settings.get("IS_ALLOW_PLUGIN_CENTER", False)
 
 # -------------
 # 引擎相关配置项
