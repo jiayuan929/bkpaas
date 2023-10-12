@@ -1325,7 +1325,7 @@ export default {
   '平台为该类应用提供应用引擎、增强服务、云API 权限、应用市场等功能': 'The platform provides APP engines, Add-ons, cloud API permissions, APP market and other features for such APP',
   '应用 ID': 'APP ID',
   '格式不正确，只能包含：3-16 字符的小写字母、数字、连字符(-)，以小写字母开头': 'Incorrect format, 3-16 Characters with lowercase letters, numbers, hyphens (-), beginning with lowercase letters',
-  '请输入 3-16 字符的小写字母、数字、连字符(-)，以小写字母开头': 'Please enter 3-16 characters in lowercase letters, numbers, hyphens (-), starting with a lowercase letter',
+  '请输入 3-20 字符的小写字母、数字、连字符(-)，以小写字母开头': 'Please enter 3-20 characters in lowercase letters, numbers, hyphens (-), starting with a lowercase letter',
   '应用的唯一标识，创建后不可修改': 'The unique identifier of the APP, which cannot be modified after creation',
   '格式不正确，只能包含：汉字、英文字母、数字，长度小于 20 个字符': 'The format is incorrect, it can only contain: Chinese characters, English letters, numbers, and the length is less than 20 characters',
   '由汉字、英文字母、数字组成，长度小于 20 个字符': 'Composed of Chinese characters, English letters and numbers, the length is less than 20 characters',

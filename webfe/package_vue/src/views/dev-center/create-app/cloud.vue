@@ -534,8 +534,8 @@ export default {
             trigger: 'blur',
           },
           {
-            max: 16,
-            message: this.$t('请输入 3-16 字符的小写字母、数字、连字符(-)，以小写字母开头'),
+            max: 20,
+            message: this.$t('请输入 3-20 字符的小写字母、数字、连字符(-)，以小写字母开头'),
             trigger: 'blur',
           },
           {
@@ -548,10 +548,10 @@ export default {
           },
           {
             validator(val) {
-              const reg = /^[a-z][a-z0-9-]{3,16}$/;
+              const reg = /^[a-z][a-z0-9-]{3,20}$/;
               return reg.test(val);
             },
-            message: this.$t('请输入 3-16 字符的小写字母、数字、连字符(-)，以小写字母开头'),
+            message: this.$t('请输入 3-20 字符的小写字母、数字、连字符(-)，以小写字母开头'),
             trigger: 'blur',
           },
         ],

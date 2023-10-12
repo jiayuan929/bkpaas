@@ -43,12 +43,12 @@
                 data-parsley-required="true"
                 :data-parsley-required-message="$t('该字段是必填项')"
                 data-parsley-minlength="3"
-                data-parsley-maxlength="16"
+                data-parsley-maxlength="20"
                 :data-parsley-pattern="isLessCodeRule ? '[a-z]+' : '[a-z][a-z0-9-]+'"
-                :data-parsley-pattern-message="isLessCodeRule ? $t('格式不正确，由小写字母组成，长度小于 16 个字符') : $t('格式不正确，只能包含：3-16 字符的小写字母、数字、连字符(-)，以小写字母开头')"
+                :data-parsley-pattern-message="isLessCodeRule ? $t('格式不正确，由小写字母组成，长度小于 20 个字符') : $t('格式不正确，只能包含：3-20 字符的小写字母、数字、连字符(-)，以小写字母开头')"
                 data-parsley-trigger="input blur"
                 class="ps-form-control form-input-width"
-                :placeholder="isLessCodeRule ? $t('由小写字母组成，长度小于 16 个字符') : $t('请输入 3-16 字符的小写字母、数字、连字符(-)，以小写字母开头')"
+                :placeholder="isLessCodeRule ? $t('由小写字母组成，长度小于 16 个字符') : $t('请输入 3-20 字符的小写字母、数字、连字符(-)，以小写字母开头')"
               >
             </p>
             <p class="whole-item-tips">
