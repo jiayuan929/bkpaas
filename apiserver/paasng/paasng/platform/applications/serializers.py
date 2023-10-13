@@ -28,11 +28,12 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.validators import UniqueValidator, qs_exists
 
-from paas_wl.infras.cluster.shim import RegionClusterService
 from paas_wl.bk_app.cnative.specs.constants import ApiVersion
 from paas_wl.bk_app.cnative.specs.crd.bk_app import BkAppResource
 from paas_wl.bk_app.cnative.specs.models import to_error_string
+from paas_wl.infras.cluster.shim import RegionClusterService
 from paas_wl.workloads.images.serializers import ImageCredentialSLZ
+from paasng.core.region.states import get_region
 from paasng.platform.applications.constants import AppLanguage, ApplicationRole, ApplicationType
 from paasng.platform.applications.exceptions import AppFieldValidationError, IntegrityError
 from paasng.platform.applications.models import Application, UserMarkedApplication
@@ -45,7 +46,6 @@ from paasng.platform.applications.signals import (
 from paasng.platform.applications.specs import AppTypeSpecs
 from paasng.platform.modules.constants import SourceOrigin
 from paasng.platform.modules.serializers import MinimalModuleSLZ, ModuleSLZ, ModuleSourceConfigSLZ
-from paasng.core.region.states import get_region
 from paasng.utils.i18n.serializers import I18NExtend, TranslatedCharField, i18n
 from paasng.utils.serializers import NickNameField, UserField
 from paasng.utils.validators import (
@@ -137,7 +137,7 @@ class AppIDField(serializers.RegexField):
 
     def __init__(self, regex=RE_APP_CODE, *args, **kwargs):
         preset_kwargs = dict(
-            max_length=16,
+            max_length=20,
             min_length=3,
             required=True,
             help_text='应用 ID',
