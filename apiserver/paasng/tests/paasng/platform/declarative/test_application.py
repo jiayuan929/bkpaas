@@ -24,10 +24,12 @@ from django.utils.translation import override
 from django_dynamic_fixture import G
 
 from paasng.accessories.publish.market.models import Product, Tag
+from paasng.accessories.publish.sync_market.managers import AppManger
 from paasng.accessories.servicehub.constants import Category
 from paasng.accessories.servicehub.manager import mixed_service_mgr
 from paasng.accessories.servicehub.sharing import ServiceSharingManager
 from paasng.accessories.services.models import Plan, Service, ServiceCategory
+from paasng.core.core.storages.sqlalchemy import console_db
 from paasng.core.region.models import get_all_regions
 from paasng.infras.accounts.models import UserProfile
 from paasng.platform.applications.models import Application
@@ -37,7 +39,7 @@ from paasng.platform.declarative.application.validations import AppDescriptionSL
 from paasng.platform.declarative.exceptions import DescriptionValidationError
 from paasng.platform.declarative.serializers import validate_desc
 from tests.utils.auth import create_user
-from tests.utils.helpers import configure_regions, create_app, generate_random_string
+from tests.utils.helpers import configure_regions, create_app, create_legacy_application, generate_random_string
 
 pytestmark = pytest.mark.django_db
 
@@ -90,7 +92,7 @@ def make_app_desc(
 
 
 class TestAppDeclarativeControllerCreation:
-    @pytest.mark.parametrize("field_name", ["bk_app_code", "bk_app_name", "region"])
+    @pytest.mark.parametrize(("field_name",), ["bk_app_code", "bk_app_name", "region"])
     def test_run_invalid_input(self, bk_user, random_name, field_name):
         app_json = {"bk_app_code": random_name, "bk_app_name": random_name}
         app_json[field_name] = "@invalid value" * 10
@@ -100,7 +102,7 @@ class TestAppDeclarativeControllerCreation:
             controller.perform_action(get_app_description(app_json))
         assert field_name in exc_info.value.detail
 
-    @pytest.mark.parametrize("bk_app_code_len,is_valid", [(16, True), (20, False), (30, False)])
+    @pytest.mark.parametrize(("bk_app_code_len", "is_valid"), [(16, True), (20, False), (30, False)])
     def test_app_code_length(self, bk_user, random_name, bk_app_code_len, is_valid):
         # 保证应用 ID 是以字母开头
         bk_app_code = f"ut{generate_random_string(length=(bk_app_code_len-2))}"
@@ -123,7 +125,7 @@ class TestAppDeclarativeControllerCreation:
             AppDeclarativeController(bk_user).perform_action(get_app_description(app_json))
         assert "bk_app_name" in exc_info.value.detail
 
-    @pytest.mark.parametrize("module_name", ["$", "0us0", "-a", "a-", "_a", "a_", "a0us0b"])
+    @pytest.mark.parametrize(("module_name",), ["$", "0us0", "-a", "a-", "_a", "a_", "a0us0b"])
     def test_invalid_module_name(self, module_name, random_name):
         app_json = {
             "bk_app_code": random_name,
@@ -134,7 +136,7 @@ class TestAppDeclarativeControllerCreation:
             get_app_description(app_json)
 
     @pytest.mark.parametrize(
-        "profile_regions,region,is_success",
+        ("profile_regions", "region", "is_success"),
         [
             (["r1"], "r1", True),
             (["r1"], "r2", False),
@@ -178,7 +180,7 @@ class TestAppDeclarativeControllerCreation:
 
 
 class TestAppDeclarativeControllerUpdate:
-    @pytest.fixture
+    @pytest.fixture()
     def existed_app(self, bk_user, random_name):
         """Create an application before to test update"""
         app_json = make_app_desc(random_name)
@@ -210,6 +212,7 @@ class TestAppDeclarativeControllerUpdate:
         assert "region" in exc_info.value.detail
 
     def test_name_modified(self, bk_user, existed_app):
+        create_legacy_application(existed_app.code)
         # Use new name
         new_name = existed_app.name + "2"
         new_name_en = existed_app.name + "en"
@@ -222,6 +225,10 @@ class TestAppDeclarativeControllerUpdate:
         product = Product.objects.get(code=existed_app.code)
         assert product.name == new_name
         assert product.name_en == new_name_en
+        # 测试桌面数据同步
+        session = console_db.get_scoped_session()
+        console_app = AppManger(session).get(existed_app.code)
+        assert console_app.name == new_name
 
     def test_normal(self, bk_user, existed_app):
         app_json = make_app_desc(existed_app.code)
@@ -302,7 +309,7 @@ class TestServicesField:
             else:
                 G(Plan, name=generate_random_string(), service=svc, config="{}", is_active=True)
 
-    @pytest.fixture
+    @pytest.fixture()
     def app_desc(self, random_name, tag):
         return make_app_desc(
             random_name,
