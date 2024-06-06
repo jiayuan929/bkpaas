@@ -127,4 +127,7 @@ def generate_context(instance: PluginInstance) -> dict:
         "apigw_cors_allow_headers": "Accept,Cache-Control,Content-Type,Keep-Alive,Origin,User-Agent,X-Requested-With",
         "extra_fields": instance.extra_fields,
     }
+    extra_fields = instance.extra_fields
+    for k, v in extra_fields.items():
+        context[k] = v
     return context
