@@ -124,12 +124,14 @@ def generate_context(instance: PluginInstance) -> dict:
         "plugin_desc": instance.name,
         "init_admin": instance.creator.username,
         "init_apigw_maintainer": instance.creator.username,
+        "extra_fields": instance.extra_fields,
         "apigw_manager_url_tmpl": settings.BK_API_URL_TMPL,
         "apigw_cors_allow_origins": "''",
         "apigw_cors_allow_methods": "GET,POST,PUT,PATCH,HEAD,DELETE,OPTIONS",
         "apigw_cors_allow_headers": "Accept,Cache-Control,Content-Type,Keep-Alive,Origin,User-Agent,X-Requested-With",
     }
-    data = {**_c, **instance.extra_fields}
+    extra_fields = instance.extra_fields
+    data = {**_c, **extra_fields}
 
-    logger.exception("generate_context data: {data}")
+    logger.exception(f"generate_context data: {data}")
     return data
