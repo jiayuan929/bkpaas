@@ -17,6 +17,7 @@ We undertake not to change the open source license (MIT license) applicable
 to the current version of the project delivered to anyone in the future.
 """
 import datetime
+import logging
 import shutil
 from pathlib import Path
 from typing import Dict, List, Optional, Protocol
@@ -29,6 +30,8 @@ from paasng.bk_plugins.pluginscenter.constants import PluginRole
 from paasng.bk_plugins.pluginscenter.definitions import PluginCodeTemplate
 from paasng.bk_plugins.pluginscenter.models import PluginInstance
 from paasng.platform.sourcectl.utils import generate_temp_dir
+
+logger = logging.getLogger(__name__)
 
 
 @define
@@ -125,9 +128,14 @@ def generate_context(instance: PluginInstance) -> dict:
         "apigw_cors_allow_origins": "''",
         "apigw_cors_allow_methods": "GET,POST,PUT,PATCH,HEAD,DELETE,OPTIONS",
         "apigw_cors_allow_headers": "Accept,Cache-Control,Content-Type,Keep-Alive,Origin,User-Agent,X-Requested-With",
-        "extra_fields": instance.extra_fields,
     }
+    instance.refresh_from_db()
+
+    logging.exception(f"generate_context extra_fields: {instance.extra_fields}")
+
     extra_fields = instance.extra_fields
     for k, v in extra_fields.items():
         context[k] = v
+
+    logging.exception(f"generate_context context: {context}")
     return context
