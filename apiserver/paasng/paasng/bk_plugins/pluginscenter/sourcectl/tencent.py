@@ -288,11 +288,12 @@ class PluginRepoInitializer:
         """初始化插件代码"""
         git_project = GitProject.parse_from_repo_url(plugin.repository, "tc_git")
         context = generate_context(plugin)
+        logger.exception("initial_repo context: {context}")
         with generate_temp_dir() as dest_dir:
             # git clone <repository> <dest_dir>
             self._client.clone(self._build_repo_url_with_auth(git_project), dest_dir)
             # render <template> to <dest_dir>
-            self._template_render.render(self._get_accessible_template(plugin), dest_dir, context=context)
+            self._template_render.render(self._get_accessible_template(plugin), dest_dir, extra_context=context)
             # git add .
             self._client.add(dest_dir, Path("."))
             self._fix_git_user_config(dest_dir / ".git" / "config")

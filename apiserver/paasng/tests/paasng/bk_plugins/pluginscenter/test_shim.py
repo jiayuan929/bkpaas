@@ -24,6 +24,7 @@ from blue_krill.web.std_error import APIError
 from paasng.bk_plugins.pluginscenter.models import PluginInstance
 from paasng.bk_plugins.pluginscenter.shim import init_plugin_in_view
 from paasng.bk_plugins.pluginscenter.sourcectl import PluginRepoInitializer
+from paasng.bk_plugins.pluginscenter.sourcectl.base import generate_context
 
 pytestmark = pytest.mark.django_db
 
@@ -45,6 +46,7 @@ class TestInitPlugin:
     def plugin(self, plugin):
         # 清空 plugin.repository
         plugin.repository = ""
+        plugin.extra_fields = {"script": False, "category": ["standard"], "language": ["JAVA"], "description": "123"}
         plugin.save()
         return plugin
 
@@ -94,3 +96,7 @@ class TestInitPlugin:
             init_plugin_in_view(plugin, "")
         assert plugin.repository == "foo"
         assert plugin_repo_initializer.delete_project.called
+
+    def test_generate_context(self, plugin):
+        context = generate_context(plugin)
+        assert "language" in context

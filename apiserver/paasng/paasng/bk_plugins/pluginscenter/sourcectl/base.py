@@ -103,11 +103,11 @@ class TemplateRender:
     def __init__(self, downloader: TemplateDownloader):
         self.downloader = downloader
 
-    def render(self, template: PluginCodeTemplate, dest_dir: Path, context: Dict):
+    def render(self, template: PluginCodeTemplate, dest_dir: Path, extra_context: Dict):
         """渲染 `template` 到 `dest_dir` 目录"""
         with generate_temp_dir() as temp_dir, generate_temp_dir() as render_dir:
             self.downloader.download_to(template, temp_dir)
-            cookiecutter(str(temp_dir), no_input=True, extra_context=context, output_dir=str(render_dir))
+            cookiecutter(str(temp_dir), no_input=True, extra_context=extra_context, output_dir=str(render_dir))
             items = list(render_dir.iterdir())
             if len(items) == 1:
                 # 对于自带根目录的模板, 需要丢弃最外层
@@ -129,4 +129,7 @@ def generate_context(instance: PluginInstance) -> dict:
         "apigw_cors_allow_methods": "GET,POST,PUT,PATCH,HEAD,DELETE,OPTIONS",
         "apigw_cors_allow_headers": "Accept,Cache-Control,Content-Type,Keep-Alive,Origin,User-Agent,X-Requested-With",
     }
-    return {**_c, **instance.extra_fields}
+    data = {**_c, **instance.extra_fields}
+
+    logger.exception("generate_context data: {data}")
+    return data
