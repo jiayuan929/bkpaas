@@ -115,6 +115,7 @@ class TemplateRender:
 
 def generate_context(instance: PluginInstance) -> dict:
     """初始化插件模板代码时传的参数"""
+    instance.refresh_from_db()
     context = {
         "project_name": instance.id,
         "app_code": instance.id,
