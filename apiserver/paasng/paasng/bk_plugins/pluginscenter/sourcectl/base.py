@@ -129,13 +129,4 @@ def generate_context(instance: PluginInstance) -> dict:
         "apigw_cors_allow_methods": "GET,POST,PUT,PATCH,HEAD,DELETE,OPTIONS",
         "apigw_cors_allow_headers": "Accept,Cache-Control,Content-Type,Keep-Alive,Origin,User-Agent,X-Requested-With",
     }
-    instance.refresh_from_db()
-
-    logging.exception(f"generate_context extra_fields: {instance.extra_fields}")
-
-    extra_fields = instance.extra_fields
-    for k, v in extra_fields.items():
-        context[k] = v
-
-    logging.exception(f"generate_context context: {context}")
-    return context
+    return {**context, **instance.extra_fields}
