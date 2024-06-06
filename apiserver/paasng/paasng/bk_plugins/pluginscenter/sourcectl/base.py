@@ -118,7 +118,7 @@ class TemplateRender:
 
 def generate_context(instance: PluginInstance) -> dict:
     """初始化插件模板代码时传的参数"""
-    context = {
+    _c = {
         "project_name": instance.id,
         "app_code": instance.id,
         "plugin_desc": instance.name,
@@ -129,4 +129,4 @@ def generate_context(instance: PluginInstance) -> dict:
         "apigw_cors_allow_methods": "GET,POST,PUT,PATCH,HEAD,DELETE,OPTIONS",
         "apigw_cors_allow_headers": "Accept,Cache-Control,Content-Type,Keep-Alive,Origin,User-Agent,X-Requested-With",
     }
-    return {**context, **instance.extra_fields}
+    return {**_c, **instance.extra_fields}
