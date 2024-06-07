@@ -187,12 +187,18 @@ class ModuleServicesViewSet(viewsets.ViewSet, ApplicationCodeInPathMixin):
             for rel in mixed_service_mgr.list_provisioned_rels(env.engine_app, service=service):
                 instance = rel.get_instance()
                 plan = rel.get_plan()
+                # 增强服务功能是否开启
+                is_ready = True
+                if hasattr(rel, "remote_config"):
+                    is_ready = rel.remote_config.get("is_ready", True)
+
                 results.append(
                     {
                         "service_instance": instance,
                         "environment": env.environment,
                         "environment_name": AppEnvName.get_choice_label(env.environment),
                         "service_specs": plan.specifications,
+                        "is_ready": is_ready,
                         "usage": "{}",
                     }
                 )
