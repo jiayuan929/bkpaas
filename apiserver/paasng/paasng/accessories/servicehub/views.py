@@ -190,7 +190,7 @@ class ModuleServicesViewSet(viewsets.ViewSet, ApplicationCodeInPathMixin):
                 # 增强服务功能是否开启
                 is_ready = True
                 if hasattr(rel, "remote_config"):
-                    is_ready = rel.remote_config.get("is_ready", True)
+                    is_ready = rel.remote_config.is_ready
 
                 results.append(
                     {
