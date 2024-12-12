@@ -36,7 +36,7 @@ class OperationVersionBase(TimestampedModel):
     """带操作版本信息的BaseModel"""
 
     id = models.UUIDField("UUID", default=uuid.uuid4, primary_key=True, editable=False, auto_created=True, unique=True)
-    operator = BkUserField()
+    operator = BkUserField(max_length=128)
 
     source_type = models.CharField(verbose_name="源码托管类型", max_length=16, null=True)
     source_location = models.CharField("代码地址", max_length=2048)

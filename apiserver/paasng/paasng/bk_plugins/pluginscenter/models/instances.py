@@ -86,7 +86,7 @@ class PluginInstance(UuidAuditedModel):
     )
     publisher = models.CharField(verbose_name="插件发布者", max_length=64, default="")
     itsm_detail: Optional[ItsmDetail] = ItsmDetailField(default=None, null=True)
-    creator = BkUserField()
+    creator = BkUserField(max_length=128)
     is_deleted = models.BooleanField(default=False, help_text="是否已删除")
 
     logo = ProcessedImageField(
@@ -261,7 +261,7 @@ class PluginRelease(AuditedModel):
         verbose_name="灰度发布状态", max_length=32, default=constants.GrayReleaseStatus.IN_GRAY
     )
 
-    creator = BkUserField()
+    creator = BkUserField(max_length=128)
 
     objects = PluginReleaseVersionManager()
 
@@ -506,7 +506,7 @@ class OperationRecord(AuditedModel):
     """
 
     plugin = models.ForeignKey(PluginInstance, on_delete=models.CASCADE, db_constraint=False)
-    operator = BkUserField()
+    operator = BkUserField(max_length=128)
     action = models.CharField(max_length=32, choices=constants.ActionTypes.get_choices())
     specific = models.CharField(max_length=255, null=True)
     subject = models.CharField(max_length=32, choices=constants.SubjectTypes.get_choices())

@@ -164,7 +164,8 @@ class BkUserField(models.CharField):
     description = "DB field for storing blueking user"
 
     def __init__(self, *args, **kwargs):
-        kwargs["max_length"] = 64
+        if "max_length" not in kwargs:
+            kwargs["max_length"] = 128
         kwargs["blank"] = True
         kwargs["null"] = True
         kwargs.setdefault("db_index", True)

@@ -92,7 +92,7 @@ class AppOperationEmailNotificationTask(models.Model):
 class IdleAppNotificationMuteRule(AuditedModel):
     """闲置应用通知屏蔽规则"""
 
-    user = BkUserField("屏蔽人")
+    user = BkUserField("屏蔽人", max_length=128)
     app_code = models.CharField("应用 Code", max_length=32)
     module_name = models.CharField("模块名称", max_length=32)
     environment = models.CharField("部署环境", max_length=32)

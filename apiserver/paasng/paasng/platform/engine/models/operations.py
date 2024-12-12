@@ -44,7 +44,7 @@ class ModuleEnvironmentOperations(TimestampedModel):
     app_environment = models.ForeignKey(
         "applications.ApplicationEnvironment", on_delete=models.CASCADE, related_name="module_operations", null=True
     )
-    operator = BkUserField()
+    operator = BkUserField(max_length=128)
     operation_type = models.CharField(max_length=32, choices=OperationTypes.get_choices())
     object_uid = models.UUIDField("详情记录的UUID", default=uuid.uuid4, editable=False)
     status = models.CharField(

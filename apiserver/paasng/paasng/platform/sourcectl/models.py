@@ -183,7 +183,7 @@ class SvnAccount(TimestampedModel):
     """svn account for developer"""
 
     account = models.CharField(max_length=64, help_text="目前仅支持固定格式", unique=True)
-    user = BkUserField()
+    user = BkUserField(max_length=128)
     synced_from_paas20 = models.BooleanField(default=False, help_text="账户信息是否从 PaaS 2.0 同步过来")
 
     objects = SvnAccountManager()

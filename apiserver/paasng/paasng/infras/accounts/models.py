@@ -159,7 +159,7 @@ class UserProfileManager(models.Manager):
 class UserProfile(TimestampedModel):
     """Profile field for user"""
 
-    user = BkUserField(unique=True)
+    user = BkUserField(unique=True, max_length=128)
     role = models.IntegerField(default=SiteRole.USER.value)
     feature_flags = models.TextField(null=True, blank=True)
     enable_regions = RegionListField()
@@ -322,7 +322,7 @@ class AccountFeatureFlag(TimestampedModel):
     针对用户的特性标记
     """
 
-    user = BkUserField()
+    user = BkUserField(max_length=128)
     effect = models.BooleanField("是否允许(value)", default=True)
     name = models.CharField("特性名称(key)", max_length=64)
     objects = AccountFeatureFlagManager()

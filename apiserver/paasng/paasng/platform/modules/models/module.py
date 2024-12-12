@@ -52,7 +52,7 @@ class Module(OwnerTimestampedModel):
     user_preferred_root_domain = models.CharField(max_length=255, verbose_name="用户偏好的根域名", null=True)
 
     last_deployed_date = models.DateTimeField(verbose_name="最近部署时间", null=True)  # 范围：模块下的所有环境
-    creator = BkUserField(null=True)
+    creator = BkUserField(null=True, max_length=128)
 
     class Meta:
         unique_together = ("application", "name")

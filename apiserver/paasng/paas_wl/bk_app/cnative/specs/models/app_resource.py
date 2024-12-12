@@ -181,7 +181,7 @@ class AppModelDeploy(TimestampedModel):
     message = models.TextField(verbose_name=_("状态描述文字"), null=True, blank=True)
     last_transition_time = models.DateTimeField(verbose_name=_("状态最近变更时间"), null=True)
 
-    operator = BkUserField(verbose_name=_("操作者"))
+    operator = BkUserField(verbose_name=_("操作者"), max_length=128)
 
     objects = AppModelDeployQuerySet.as_manager()
 

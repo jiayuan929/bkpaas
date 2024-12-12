@@ -41,7 +41,7 @@ logger = logging.getLogger(__name__)
 class Operation(models.Model):
     region = models.CharField(max_length=32, help_text="部署区域")
     created = models.DateTimeField(auto_now_add=True, db_index=True)
-    user = BkUserField()
+    user = BkUserField(max_length=128)
     application = models.ForeignKey(
         Application, on_delete=models.CASCADE, help_text="操作的PAAS应用", null=True, blank=True
     )

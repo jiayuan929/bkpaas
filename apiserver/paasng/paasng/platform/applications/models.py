@@ -305,7 +305,7 @@ class Application(OwnerTimestampedModel):
     )
     language = models.CharField(verbose_name="编程语言", max_length=32)
 
-    creator = BkUserField()
+    creator = BkUserField(max_length=128)
     is_active = models.BooleanField(verbose_name="是否活跃", default=True)
     is_deleted = models.BooleanField("是否删除", default=False)
     last_deployed_date = models.DateTimeField(verbose_name="最近部署时间", null=True)  # 范围：应用下所有模块的所有环境
@@ -445,7 +445,7 @@ class ApplicationMembership(TimestampedModel):
     Members for one application
     """
 
-    user = BkUserField()
+    user = BkUserField(max_length=128)
     application = models.ForeignKey(Application, on_delete=models.CASCADE)
     role = models.IntegerField(default=ApplicationRole.DEVELOPER.value)
 

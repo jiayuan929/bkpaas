@@ -152,7 +152,8 @@ class BkUserField(models.CharField):
     descriptor_class = BkUserFieldAttribute
 
     def __init__(self, *args, **kwargs):
-        kwargs["max_length"] = 64
+        if "max_length" not in kwargs:
+            kwargs["max_length"] = 128
         kwargs["blank"] = True
         kwargs["null"] = True
         kwargs.setdefault("db_index", True)
@@ -223,7 +224,7 @@ class TimestampedModel(models.Model):
 class OwnerTimestampedModel(TimestampedModel):
     """Model with 'created' and 'updated' fields."""
 
-    owner = BkUserField()
+    owner = BkUserField(max_length=128)
 
     class Meta:
         abstract = True

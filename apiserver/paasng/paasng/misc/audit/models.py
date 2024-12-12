@@ -29,7 +29,7 @@ from paasng.utils.models import BkUserField, UuidAuditedModel
 
 
 class BaseOperation(UuidAuditedModel):
-    user = BkUserField()
+    user = BkUserField(max_length=128)
     # 时间字段手添加索引，方便审计记录表过大时做分区优化
     start_time = models.DateTimeField(auto_now_add=True, verbose_name="开始时间", db_index=True)
     end_time = models.DateTimeField(null=True, help_text="仅需要后台执行的的操作才需要记录结束时间")
@@ -92,9 +92,7 @@ class BaseOperation(UuidAuditedModel):
     @property
     def need_to_report_bk_audit(self) -> bool:
         # 仅操作为终止状态时才记录到审计中心
-        if self.action_id and self.is_terminated:
-            return True
-        return False
+        return bool(self.action_id and self.is_terminated)
 
     def get_display_text(self) -> str:
         """操作记录描述，用于首页、应用概览页面前 5 条部署记录的展示"""
