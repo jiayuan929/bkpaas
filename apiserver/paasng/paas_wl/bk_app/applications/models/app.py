@@ -32,7 +32,7 @@ logger = logging.getLogger(__name__)
 class App(UuidAuditedModel):
     """App Model"""
 
-    owner = models.CharField(max_length=64)
+    owner = models.CharField(max_length=256)
     region = models.CharField(max_length=32)
     name = models.SlugField(max_length=64, validators=[validate_app_name])
     # deprecated field

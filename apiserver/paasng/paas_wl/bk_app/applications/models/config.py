@@ -55,7 +55,7 @@ RuntimeConfigField = make_json_field("RuntimeConfigField", py_model=RuntimeConfi
 class Config(UuidAuditedModel):
     """App configs, includes env variables and resource limits"""
 
-    owner = models.CharField(max_length=64)
+    owner = models.CharField(max_length=256)
     app = models.ForeignKey("App", on_delete=models.CASCADE)
     values = JSONField(default={}, blank=True)
     resource_requirements = JSONField(default={}, blank=True)

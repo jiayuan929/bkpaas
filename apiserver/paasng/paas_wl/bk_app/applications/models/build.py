@@ -54,7 +54,7 @@ class Build(UuidAuditedModel):
     application_id = models.UUIDField(verbose_name="所属应用", null=True)
     module_id = models.UUIDField(verbose_name="所属模块", null=True)
 
-    owner = models.CharField(max_length=64)
+    owner = models.CharField(max_length=256)
     app = models.ForeignKey("App", null=True, on_delete=models.CASCADE, help_text="[deprecated] wl_app 外键")
 
     # Slug path
@@ -262,7 +262,7 @@ class BuildProcess(UuidAuditedModel):
     application_id = models.UUIDField(verbose_name="所属应用", null=True)
     module_id = models.UUIDField(verbose_name="所属模块", null=True)
 
-    owner = models.CharField(max_length=64)
+    owner = models.CharField(max_length=256)
     app = models.ForeignKey("App", null=True, on_delete=models.CASCADE, help_text="[deprecated] wl_app 外键")
     image = models.CharField(max_length=512, null=True, help_text="builder image")
     buildpacks = JSONCharField(max_length=4096, null=True)

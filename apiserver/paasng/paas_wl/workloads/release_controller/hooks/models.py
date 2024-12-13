@@ -94,7 +94,7 @@ class Command(UuidAuditedModel):
 
     build = models.ForeignKey("api.Build", on_delete=models.CASCADE, null=True, db_constraint=False)
     config = models.ForeignKey("api.Config", on_delete=models.CASCADE, db_constraint=False)
-    operator = models.CharField(max_length=64, help_text="操作者(被编码的 username), 目前该字段无意义")
+    operator = models.CharField(max_length=256, help_text="操作者(被编码的 username), 目前该字段无意义")
 
     objects = CommandManager()
 
@@ -143,6 +143,4 @@ class Command(UuidAuditedModel):
         """Check if current command allows interruptions"""
         if CommandStatus(self.status) in CommandStatus.get_finished_states():
             return False
-        if not self.logs_was_ready_at:
-            return False
-        return True
+        return self.logs_was_ready_at

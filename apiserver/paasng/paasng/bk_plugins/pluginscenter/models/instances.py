@@ -345,7 +345,7 @@ class PluginReleaseStage(AuditedModel):
     pipeline_detail = models.JSONField(
         verbose_name="流水线构建详情", default=None, null=True, help_text="该字段仅 invoke_method = pipeline 时可用"
     )
-    operator = models.CharField(verbose_name="操作人", max_length=32, null=True)
+    operator = models.CharField(verbose_name="操作人", max_length=256, null=True)
 
     next_stage = models.OneToOneField("PluginReleaseStage", on_delete=models.SET_NULL, db_constraint=False, null=True)
 

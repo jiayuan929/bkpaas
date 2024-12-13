@@ -108,7 +108,7 @@ class Release(UuidAuditedModel):
     Releases contain a class`Build` and a class`Config`.
     """
 
-    owner = models.CharField(max_length=64)
+    owner = models.CharField(max_length=256)
     app = models.ForeignKey("App", on_delete=models.CASCADE)
     version = models.PositiveIntegerField()
     summary = models.TextField(blank=True, null=True)
